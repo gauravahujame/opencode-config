@@ -36,12 +36,12 @@ type Context = {
 ### Registry Pattern
 
 ```typescript
-// packages/opencode/src/tool/registry.ts
+// packages/opencode/src/tools/registry.ts
 ToolRegistry.state(async () => {
   const custom = [];
-  // Scan tool/*.{js,ts} in all config directories
+  // Scan tools/*.{js,ts} in all config directories
   for (const dir of await Config.directories()) {
-    const glob = new Bun.Glob("tool/*.{js,ts}");
+    const glob = new Bun.Glob("tools/*.{js,ts}");
     // Load and register
   }
   // Load from plugins too

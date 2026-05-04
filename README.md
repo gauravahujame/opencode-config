@@ -390,10 +390,10 @@ Load via `@knowledge/file-name.md` references when relevant.
 ┌─────────────────────────────────────────────────────────────────┐
 │                        ~/.config/opencode                        │
 ├─────────────────────────────────────────────────────────────────┤
-│  command/           25 slash commands (/swarm, /debug, etc.)    │
-│  tool/              12 custom MCP tools (cass, ubs, etc.)       │
-│  plugin/            swarm.ts (orchestration)                    │
-│  agent/             specialized subagents (worker, planner...)  │
+│  commands/           25 slash commands (/swarm, /debug, etc.)    │
+│  tools/              12 custom MCP tools (cass, ubs, etc.)       │
+│  plugins/            swarm.ts (orchestration)                    │
+│  agents/             specialized subagents (worker, planner...)  │
 │  knowledge/         context files (tdd, effect, nextjs, etc.)   │
 │  skills/            7 injectable knowledge packages             │
 │  opencode.jsonc     main config (models, MCP servers, perms)    │

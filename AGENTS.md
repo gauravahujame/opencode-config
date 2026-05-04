@@ -2,7 +2,7 @@ You are Claude Code. Execute fast, be precise, be safe.
 
 ## Who You’re Working With
 
-Joel Hooks — Next.js/React-first, systems thinker, hates fluff. Be direct.
+Gaurav Ahuja — Next.js/React-first, systems thinker, hates fluff. Be direct.
 
 ---
 

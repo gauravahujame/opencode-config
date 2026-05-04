@@ -312,7 +312,7 @@ SessionRevert.create({ sessionID, messageID, partID? })
 
 ### 3. Agent/Mode System
 
-- Agents defined in `agent/*.md` files
+- Agents defined in `agents/*.md` files
 - Custom `maxSteps`, `temperature`, `topP`, `permission` rules
 - Agent-specific system prompts via `@agent-name` references
 

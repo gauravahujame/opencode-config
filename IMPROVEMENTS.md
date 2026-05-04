@@ -44,7 +44,7 @@ function checkDoomLoop(sessionID: string, tool: string, args: any): boolean {
 }
 ```
 
-**Files**: `plugin/swarm.ts`
+**Files**: `plugins/swarm.ts`
 
 ### 2. Add Abort Signal Handling to All Tools
 
@@ -65,7 +65,7 @@ async execute(args, ctx) {
 }
 ```
 
-**Files**: All tools in `tool/*.ts`
+**Files**: All tools in `tools/*.ts`
 
 ### 3. Add Output Size Limits
 
@@ -87,7 +87,7 @@ function truncateOutput(output: string): string {
 }
 ```
 
-**Files**: Wrapper in `tool/` or each tool individually
+**Files**: Wrapper in `tools/` or each tool individually
 
 ### 4. Create Read-Only Explore Agent
 
@@ -98,7 +98,7 @@ function truncateOutput(output: string): string {
 **Implementation**:
 
 ```yaml
-# agent/explore.md
+# agents/explore.md
 ---
 name: explore
 description: Fast codebase exploration - read-only, no modifications
@@ -118,7 +118,7 @@ permission:
 You are a read-only codebase explorer. Search, read, analyze - never modify.
 ```
 
-**Files**: `agent/explore.md`
+**Files**: `agents/explore.md`
 
 ## Medium Priority (This Month)
 
@@ -134,14 +134,14 @@ You are a read-only codebase explorer. Search, read, analyze - never modify.
 
 ### 6. Support Nested Agent Directories
 
-**What**: Allow `agent/swarm/planner.md` → agent name `swarm/planner`.
+**What**: Allow `agents/swarm/planner.md` → agent name `swarm/planner`.
 
 **Why**: Better organization as agent count grows.
 
 **Implementation**: Already supported by OpenCode! Just use nested paths:
 
 ```
-agent/
+agents/
   swarm/
     planner.md  → "swarm/planner"
     worker.md   → "swarm/worker"
@@ -149,7 +149,7 @@ agent/
     auditor.md  → "security/auditor"
 ```
 
-**Files**: Reorganize `agent/*.md` into subdirectories
+**Files**: Reorganize `agents/*.md` into subdirectories
 
 ### 7. Add mtime-Based Sorting to Search Results
 
@@ -164,7 +164,7 @@ agent/
 results.sort((a, b) => b.mtime - a.mtime);
 ```
 
-**Files**: `tool/cass.ts`, any search tools
+**Files**: `tools/cass.ts`, any search tools
 
 ### 8. Implement FileTime-Like Tracking for Beads
 
@@ -194,7 +194,7 @@ function assertBeadFresh(
 }
 ```
 
-**Files**: `plugin/swarm.ts` or new `tool/bead-time.ts`
+**Files**: `plugins/swarm.ts` or new `tools/bead-time.ts`
 
 ## Low Priority (Backlog)
 
@@ -263,7 +263,7 @@ Week 1: ✅ COMPLETE
   [x] Doom loop detection (swarm plugin)
   [x] Abort signal handling (all tools)
   [x] Output size limits (tool-utils.ts)
-  [x] Explore agent (agent/explore.md)
+  [x] Explore agent (agents/explore.md)
   [x] Repo tooling optimizations (caching, parallel, GitHub token)
 
 Week 2:
@@ -291,9 +291,9 @@ Backlog:
 
 # Content Inventory for README Overhaul (Dec 2024)
 
-> **Audit Cell:** readme-1  
-> **Epic:** readme-overhaul  
-> **Date:** 2024-12-18  
+> **Audit Cell:** readme-1
+> **Epic:** readme-overhaul
+> **Date:** 2024-12-18
 > **Purpose:** Complete inventory of features for portfolio-quality README showcase
 
 ## Executive Summary
@@ -465,7 +465,7 @@ Transforms single-agent work into coordinated parallel execution:
 
 ### CASS - Cross-Agent Session Search
 
-**What:** Unified search across ALL your AI coding agent histories  
+**What:** Unified search across ALL your AI coding agent histories
 **Indexed Agents:** Claude Code, Codex, Cursor, Gemini, Aider, ChatGPT, Cline, OpenCode, Amp, Pi-Agent
 
 **Why it matters:** Before solving a problem, check if ANY agent already solved it. Prevents reinventing wheels.
@@ -513,7 +513,7 @@ Transforms single-agent work into coordinated parallel execution:
 
 ## 3. Custom MCP Tools (12 tools)
 
-**Location:** `tool/*.ts`
+**Location:** `tools/*.ts`
 
 | Tool                | Purpose                    | Language       | Unique Features                                                               |
 | ------------------- | -------------------------- | -------------- | ----------------------------------------------------------------------------- |
@@ -563,7 +563,7 @@ Transforms single-agent work into coordinated parallel execution:
 
 ## 5. Slash Commands (25 total)
 
-**Location:** `command/*.md`  
+**Location:** `commands/*.md`
 **Total Documentation:** 3,626 lines
 
 ### Swarm (4 commands)
@@ -625,7 +625,7 @@ Transforms single-agent work into coordinated parallel execution:
 
 ## 6. Specialized Agents (7 total)
 
-**Location:** `agent/*.md`
+**Location:** `agents/*.md`
 
 | Agent             | Model      | Purpose                                              | Read-Only | Special Perms    |
 | ----------------- | ---------- | ---------------------------------------------------- | --------- | ---------------- |
@@ -649,7 +649,7 @@ Transforms single-agent work into coordinated parallel execution:
 
 ## 7. Skills (7 bundled)
 
-**Location:** `skills/*/SKILL.md`  
+**Location:** `skills/*/SKILL.md`
 **Total Documentation:** 3,043 lines
 
 | Skill                    | Lines | Purpose                                                            | Trigger                              |
@@ -723,7 +723,7 @@ Transforms single-agent work into coordinated parallel execution:
 
 ### Swarm Compaction Hook
 
-**Location:** `plugin/swarm.ts` (lines 884-1079)
+**Location:** `plugins/swarm.ts` (lines 884-1079)
 
 When context gets compacted, the plugin:
 
@@ -981,7 +981,7 @@ Future errors prevented
 ## 4. Slash Commands
 
 - Table with descriptions
-- Links to command/\*.md
+- Links to commands/\*.md
 
 ## 5. Agents
 
@@ -1026,11 +1026,11 @@ Future errors prevented
 
 **Must Read:**
 
-- `plugin/swarm.ts` (lines 1-120, 884-1079) - plugin architecture + compaction hook
-- `command/swarm.md` - full swarm workflow
-- `command/debug-plus.md` - prevention pipeline
-- `command/fix-all.md` - parallel agent dispatch
-- `agent/swarm/worker.md` - worker checklist
+- `plugins/swarm.ts` (lines 1-120, 884-1079) - plugin architecture + compaction hook
+- `commands/swarm.md` - full swarm workflow
+- `commands/debug-plus.md` - prevention pipeline
+- `commands/fix-all.md` - parallel agent dispatch
+- `agents/swarm/worker.md` - worker checklist
 - `opencode.jsonc` - config highlights
 
 **Reference:**

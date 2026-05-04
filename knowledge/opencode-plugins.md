@@ -1,7 +1,7 @@
 # OpenCode Plugin System Architecture
 
-**Analysis Date:** 2025-12-11  
-**Source:** sst/opencode @ github.com  
+**Analysis Date:** 2025-12-11
+**Source:** sst/opencode @ github.com
 **Analyzed by:** FuchsiaCastle (opencode-pnt.1)
 
 ## Executive Summary
@@ -18,7 +18,7 @@ Plugins are loaded via `Instance.state` (lazy singleton per project instance):
 
 ```typescript
 const state = Instance.state(async () => {
-  const plugins = [...(config.plugin ?? [])];
+  const plugins = [...(config.plugins ?? [])];
 
   // Default plugins (unless disabled via flag)
   if (!Flag.OPENCODE_DISABLE_DEFAULT_PLUGINS) {
@@ -130,10 +130,10 @@ export type ToolDefinition = ReturnType<typeof tool>;
 
 Tools are discovered from two sources:
 
-1. **Local TypeScript files** (`tool/*.{ts,js}`):
+1. **Local TypeScript files** (`tools/*.{ts,js}`):
 
 ```typescript
-const glob = new Bun.Glob("tool/*.{js,ts}");
+const glob = new Bun.Glob("tools/*.{js,ts}");
 for (const dir of await Config.directories()) {
   for await (const match of glob.scan({ cwd: dir, absolute: true })) {
     const namespace = path.basename(match, path.extname(match));
@@ -147,12 +147,12 @@ for (const dir of await Config.directories()) {
 }
 ```
 
-2. **Plugin hooks** (`plugin.tool`):
+2. **Plugin hooks** (`plugins.tools`):
 
 ```typescript
 const plugins = await Plugin.list();
 for (const plugin of plugins) {
-  for (const [id, def] of Object.entries(plugin.tool ?? {})) {
+  for (const [id, def] of Object.entries(plugin.tools ?? {})) {
     custom.push(fromPlugin(id, def));
   }
 }
@@ -162,8 +162,8 @@ for (const plugin of plugins) {
 
 - If export is `default`, tool ID = filename
 - Otherwise: `${filename}_${exportName}`
-- Example: `tool/typecheck.ts` with `export default tool({...})` → `typecheck`
-- Example: `tool/git.ts` with `export const status = tool({...})` → `git_status`
+- Example: `tools/typecheck.ts` with `export default tool({...})` → `typecheck`
+- Example: `tools/git.ts` with `export const status = tool({...})` → `git_status`
 
 ### Built-in vs Custom Tools
 
@@ -194,7 +194,7 @@ export const Command = z.object({
 });
 ```
 
-**Storage:** Markdown files in `command/*.md` with frontmatter
+**Storage:** Markdown files in `commands/*.md` with frontmatter
 
 Example:
 
@@ -212,7 +212,7 @@ You are the swarm coordinator...
 **Location:** `packages/opencode/src/config/config.ts` (line ~180)
 
 ```typescript
-const COMMAND_GLOB = new Bun.Glob("command/*.md");
+const COMMAND_GLOB = new Bun.Glob("commands/*.md");
 async function loadCommand(dir: string) {
   const result: Record<string, Command> = {};
   for await (const item of COMMAND_GLOB.scan({ cwd: dir, absolute: true })) {
@@ -272,23 +272,23 @@ export const Agent = z.object({
 });
 ```
 
-**Storage:** Markdown files in `agent/**/*.md` (supports nested directories)
+**Storage:** Markdown files in `agents/**/*.md` (supports nested directories)
 
 ### Agent Discovery
 
 **Location:** `packages/opencode/src/config/config.ts` (line ~218)
 
 ```typescript
-const AGENT_GLOB = new Bun.Glob("agent/**/*.md");
+const AGENT_GLOB = new Bun.Glob("agents/**/*.md");
 async function loadAgent(dir: string) {
   for await (const item of AGENT_GLOB.scan({ cwd: dir, absolute: true })) {
     const md = await ConfigMarkdown.parse(item);
 
     // Nested path support
     let agentName = path.basename(item, ".md");
-    const agentFolderPath = item.includes("/.opencode/agent/")
-      ? item.split("/.opencode/agent/")[1]
-      : item.split("/agent/")[1];
+    const agentFolderPath = item.includes("/.opencode/agents/")
+      ? item.split("/.opencode/agents/")[1]
+      : item.split("/agents/")[1];
 
     if (agentFolderPath.includes("/")) {
       const relativePath = agentFolderPath.replace(".md", "");
@@ -317,7 +317,7 @@ async function loadAgent(dir: string) {
 
 **Nested Agents:**
 
-- `agent/swarm/planner.md` → name = `swarm/planner`
+- `agents/swarm/planner.md` → name = `swarm/planner`
 - Allows organizational hierarchy
 
 ### Mode vs Agent
@@ -440,24 +440,24 @@ const state = Instance.state(async () => {
 
 **Config Merge Strategy:**
 
-- `agent`, `command`, `mode`: Deep merge (Config.directories() aggregates all)
-- `plugin`: Array concatenation + deduplication
+- `agents`, `commands`, `mode`: Deep merge (Config.directories() aggregates all)
+- `plugins`: Array concatenation + deduplication
 - `mcp`: Object merge (deep merge)
 - `tools`: Object merge
 
 **Plugin Sources:**
 
-1. Config file: `opencode.json` → `plugin: ["pkg@version", "file://..."]`
-2. Filesystem: `plugin/*.{ts,js}` → auto-discovered as `file://` URLs
+1. Config file: `opencode.json` → `plugins: ["pkg@version", "file://..."]`
+2. Filesystem: `plugins/*.{ts,js}` → auto-discovered as `file://` URLs
 3. Default plugins: `opencode-copilot-auth@0.0.9`, `opencode-anthropic-auth@0.0.5`
 
 ## Comparison to Our Local Setup
 
 ### Similarities
 
-✅ Markdown-based agents/commands with frontmatter  
-✅ Filesystem-based tool discovery (`tool/*.ts`)  
-✅ Config hierarchy (global + project-local)  
+✅ Markdown-based agents/commands with frontmatter
+✅ Filesystem-based tool discovery (`tools/*.ts`)
+✅ Config hierarchy (global + project-local)
 ✅ MCP integration for external tools
 
 ### Differences
@@ -465,9 +465,9 @@ const state = Instance.state(async () => {
 | Aspect             | sst/opencode                                    | Our Setup                     |
 | ------------------ | ----------------------------------------------- | ----------------------------- |
 | **Plugin System**  | Full npm package support + lifecycle hooks      | No plugins (just local tools) |
-| **Tool Discovery** | `tool/*.{ts,js}` + plugin.tool                  | `tool/*.ts` only              |
-| **Agent Format**   | `agent/**/*.md` (nested support)                | `agent/*.md` (flat)           |
-| **Command Format** | `command/*.md` with `template`                  | `command/*.md` (same)         |
+| **Tool Discovery** | `tools/*.{ts,js}` + plugins.tools                | `tools/*.ts` only              |
+| **Agent Format**   | `agents/**/*.md` (nested support)                | `agents/*.md` (flat)           |
+| **Command Format** | `commands/*.md` with `template`                  | `commands/*.md` (same)         |
 | **MCP Config**     | `config.mcp` object with OAuth support          | Direct MCP server config      |
 | **Tool Naming**    | Smart: `filename_exportName` or just `filename` | Export name only              |
 | **Auth Plugins**   | Dedicated auth hooks (OAuth flow)               | No auth plugin system         |
@@ -478,21 +478,21 @@ const state = Instance.state(async () => {
 2. **No Auth Hooks**: Can't extend authentication (e.g., custom OAuth providers)
 3. **No Tool Lifecycle Hooks**: Can't intercept tool execution (before/after)
 4. **No Event Bus**: OpenCode has `Bus.subscribeAll()` for plugin event subscription
-5. **Flat Agent Structure**: No nested agent directories (`agent/swarm/planner.md`)
+5. **Flat Agent Structure**: No nested agent directories (`agents/swarm/planner.md`)
 
 ### Opportunities for Improvement
 
 1. **Plugin System**:
-   - Add `plugin/*.ts` discovery with `export default Plugin = async (input) => ({ ... })`
-   - Implement minimal hooks: `tool`, `config`, `event`
+   - Add `plugins/*.ts` discovery with `export default Plugin = async (input) => ({ ... })`
+   - Implement minimal hooks: `tools`, `config`, `event`
    - Keep it lightweight (no npm package support initially)
 
 2. **Nested Agents**:
-   - Change glob from `agent/*.md` to `agent/**/*.md`
-   - Use folder structure for namespacing: `agent/swarm/planner.md` → `swarm/planner`
+   - Change glob from `agents/*.md` to `agents/**/*.md`
+   - Use folder structure for namespacing: `agents/swarm/planner.md` → `swarm/planner`
 
 3. **Tool Lifecycle Hooks**:
-   - Wrap tool execute in `tool/registry.ts` to call plugin hooks
+   - Wrap tool execute in `tools/registry.ts` to call plugin hooks
    - Useful for logging, metrics, input validation
 
 4. **Smart Tool Naming**:
@@ -571,14 +571,14 @@ Built-in agents are hardcoded, user agents override/extend.
 ## Recommended Next Steps
 
 1. **Spike: Minimal Plugin System**
-   - Add `plugin/*.ts` discovery
-   - Implement `tool` and `config` hooks only
+   - Add `plugins/*.ts` discovery
+   - Implement `tools` and `config` hooks only
    - Test with a simple plugin that adds a custom tool
 
 2. **Nested Agent Support**
-   - Update glob pattern to `agent/**/*.md`
+   - Update glob pattern to `agents/**/*.md`
    - Update agent name extraction logic
-   - Test with `agent/swarm/planner.md`
+   - Test with `agents/swarm/planner.md`
 
 3. **Smart Tool Naming**
    - Update tool registry to check if export is `default`
@@ -592,12 +592,12 @@ Built-in agents are hardcoded, user agents override/extend.
 
 5. **Documentation**
    - Document plugin interface in knowledge/
-   - Create example plugin in plugin/example.ts
+   - Create example plugin in plugins/example.ts
    - Add plugin development guide
 
 ## Open Questions
 
-1. **Plugin Package Management**: Should we support npm packages like OpenCode, or stick to local `plugin/*.ts` files?
+1. **Plugin Package Management**: Should we support npm packages like OpenCode, or stick to local `plugins/*.ts` files?
 2. **Auth Plugin Priority**: Do we need auth plugins, or is MCP OAuth enough?
 3. **Event Bus**: Should we implement a full event bus, or just plugin hooks?
 4. **Plugin Versioning**: How do we handle plugin version conflicts if we support npm packages?

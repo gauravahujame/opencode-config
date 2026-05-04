@@ -281,7 +281,7 @@ permission:
 
 1. Global config (`~/.config/opencode/opencode.jsonc`)
 2. Project config (searched up from working dir)
-3. Agent markdown files (`agent/`, `mode/` dirs)
+3. Agent markdown files (`agents/`, `mode/` dirs)
 4. Environment flags (`OPENCODE_CONFIG`, `OPENCODE_CONFIG_CONTENT`)
 
 **Merge behavior**: Deep merge with plugin array concatenation
