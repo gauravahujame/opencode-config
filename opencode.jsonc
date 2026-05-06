@@ -1,10 +1,10 @@
 {
-  "plugins": [
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": [
+    "plugins/graphify.js"
     // "oh-my-openagent@latest",
-    "plugins/graphify.js",
     // "opencode-antigravity-auth@latest",
   ],
-  "$schema": "https://opencode.ai/config.json",
   // === MODELS ===
   "model": "litellm/tier-fast",
   "small_model": "litellm/tier-fast",
@@ -95,7 +95,7 @@
     }
   },
   // === AGENTS ===
-  "agents": {
+  "agent": {
     "build": {
       "model": "litellm/tier-balanced",
       "temperature": 0.3
