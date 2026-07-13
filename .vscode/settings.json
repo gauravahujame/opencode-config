@@ -1,0 +1,13 @@
+{
+  "bun.runtime": "/Users/gaurav/.local/share/mise/shims/bun",
+  "go.goroot": "/Users/gaurav/.local/share/mise/installs/go/1.26.2",
+  "debug.javascript.defaultRuntimeExecutable": {
+    "pwa-node": "/Users/gaurav/.local/share/mise/shims/node"
+  },
+  "go.alternateTools": {
+    "go": "/Users/gaurav/.local/share/mise/shims/go",
+    "dlv": "/Users/gaurav/.local/share/mise/shims/dlv",
+    "gopls": "/Users/gaurav/.local/share/mise/shims/gopls"
+  },
+  "python.defaultInterpreterPath": "/Users/gaurav/.local/share/mise/installs/python/3.12.1/bin/python"
+}

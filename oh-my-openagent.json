@@ -1,111 +1,112 @@
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
   "agents": {
-    "sisyphus": {
+    "atlas": {
+      "fallback_models": [
+        {
+          "model": "opencode-go/minimax-m2.7"
+        }
+      ],
       "model": "opencode-go/kimi-k2.5"
-    },
-    "oracle": {
-      "model": "google/antigravity-gemini-3.1-pro",
-      "variant": "high",
-      "fallback_models": [
-        {
-          "model": "opencode-go/glm-5"
-        }
-      ]
-    },
-    "librarian": {
-      "model": "opencode-go/minimax-m2.7",
-      "fallback_models": [
-        {
-          "model": "opencode-go/minimax-m2.7-highspeed"
-        }
-      ]
     },
     "explore": {
-      "model": "opencode-go/minimax-m2.7",
       "fallback_models": [
         {
           "model": "opencode-go/minimax-m2.7-highspeed"
         }
-      ]
+      ],
+      "model": "opencode-go/minimax-m2.7"
     },
-    "multimodal-looker": {
-      "model": "opencode-go/kimi-k2.5"
-    },
-    "prometheus": {
-      "model": "opencode-go/glm-5",
+    "librarian": {
       "fallback_models": [
         {
-          "model": "google/antigravity-gemini-3.1-pro"
+          "model": "opencode-go/minimax-m2.7-highspeed"
         }
-      ]
+      ],
+      "model": "opencode-go/minimax-m2.7"
     },
     "metis": {
       "model": "opencode-go/glm-5"
     },
     "momus": {
-      "model": "google/antigravity-gemini-3.1-pro",
-      "variant": "high",
       "fallback_models": [
         {
           "model": "opencode-go/glm-5"
         }
-      ]
+      ],
+      "model": "google/antigravity-gemini-3.1-pro",
+      "variant": "high"
     },
-    "atlas": {
-      "model": "opencode-go/kimi-k2.5",
+    "multimodal-looker": {
+      "model": "opencode-go/kimi-k2.5"
+    },
+    "oracle": {
       "fallback_models": [
         {
-          "model": "opencode-go/minimax-m2.7"
+          "model": "opencode-go/glm-5"
         }
-      ]
+      ],
+      "model": "google/antigravity-gemini-3.1-pro",
+      "variant": "high"
+    },
+    "prometheus": {
+      "fallback_models": [
+        {
+          "model": "google/antigravity-gemini-3.1-pro"
+        }
+      ],
+      "model": "opencode-go/glm-5"
+    },
+    "sisyphus": {
+      "model": "opencode-go/kimi-k2.5"
     },
     "sisyphus-junior": {
-      "model": "opencode-go/kimi-k2.5",
       "fallback_models": [
         {
           "model": "opencode-go/minimax-m2.7"
         }
-      ]
+      ],
+      "model": "opencode-go/kimi-k2.5"
     }
   },
   "categories": {
-    "visual-engineering": {
+    "artistry": {
       "model": "google/antigravity-gemini-3.1-pro",
-      "variant": "high",
-      "fallback_models": [
-        {
-          "model": "opencode-go/glm-5"
-        }
-      ]
-    },
-    "ultrabrain": {
-      "model": "google/antigravity-gemini-3.1-pro",
-      "variant": "high",
-      "fallback_models": [
-        {
-          "model": "opencode-go/glm-5"
-        }
-      ]
+      "variant": "high"
     },
     "deep": {
       "model": "google/antigravity-gemini-3.1-pro",
       "variant": "high"
     },
-    "artistry": {
+    "quick": {
+      "fallback_models": [
+        {
+          "model": "opencode-go/minimax-m2.7"
+        }
+      ],
+      "model": "google/antigravity-gemini-3-flash"
+    },
+    "ultrabrain": {
+      "fallback_models": [
+        {
+          "model": "opencode-go/glm-5"
+        }
+      ],
       "model": "google/antigravity-gemini-3.1-pro",
       "variant": "high"
     },
-    "quick": {
-      "model": "google/antigravity-gemini-3-flash",
+    "unspecified-high": {
       "fallback_models": [
+        {
+          "model": "google/antigravity-gemini-3-flash"
+        },
         {
           "model": "opencode-go/minimax-m2.7"
         }
-      ]
+      ],
+      "model": "opencode-go/kimi-k2.5"
     },
     "unspecified-low": {
-      "model": "opencode-go/kimi-k2.5",
       "fallback_models": [
         {
           "model": "google/antigravity-gemini-3-flash"
@@ -113,21 +114,19 @@
         {
           "model": "opencode-go/minimax-m2.7"
         }
-      ]
+      ],
+      "model": "opencode-go/kimi-k2.5"
     },
-    "unspecified-high": {
-      "model": "opencode-go/kimi-k2.5",
+    "visual-engineering": {
       "fallback_models": [
         {
-          "model": "google/antigravity-gemini-3-flash"
-        },
-        {
-          "model": "opencode-go/minimax-m2.7"
+          "model": "opencode-go/glm-5"
         }
-      ]
+      ],
+      "model": "google/antigravity-gemini-3.1-pro",
+      "variant": "high"
     },
     "writing": {
-      "model": "google/antigravity-gemini-3-flash",
       "fallback_models": [
         {
           "model": "opencode-go/kimi-k2.5"
@@ -135,7 +134,8 @@
         {
           "model": "opencode-go/minimax-m2.7"
         }
-      ]
+      ],
+      "model": "google/antigravity-gemini-3-flash"
     }
   }
 }

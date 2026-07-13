@@ -2,8 +2,6 @@
   "$schema": "https://opencode.ai/config.json",
   "plugin": [
     "plugins/graphify.js"
-    // "oh-my-openagent@latest",
-    // "opencode-antigravity-auth@latest",
   ],
   // === MODELS ===
   "model": "litellm/tier-fast",
@@ -66,14 +64,6 @@
   },
   // === MCP ===
   "mcp": {
-    "next-devtools": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "next-devtools-mcp@latest"
-      ]
-    },
     "chrome-devtools": {
       "type": "local",
       "command": [
@@ -97,20 +87,11 @@
   // === AGENTS ===
   "agent": {
     "build": {
-      "model": "litellm/tier-balanced",
-      "temperature": 0.3
+      "model": "deepseek/deepseek-reasoner",
+      "temperature": 0.2
     },
     "plan": {
-      "model": "litellm/tier-balanced",
-      "temperature": 0.1,
-      "tools": {
-        "write": false,
-        "edit": false,
-        "patch": false
-      }
-    },
-    "security": {
-      "model": "litellm/tier-balanced",
+      "model": "deepseek/deepseek-reasoner",
       "temperature": 0.1,
       "tools": {
         "write": false,
@@ -119,7 +100,7 @@
       }
     },
     "test-writer": {
-      "model": "litellm/tier-fast",
+      "model": "deepseek/deepseek-chat",
       "temperature": 0.2,
       "permission": {
         "write": {
@@ -131,8 +112,20 @@
         }
       }
     },
+    "figma-parse": {
+      "model": "deepseek/deepseek-chat",
+      "temperature": 0.1,
+      "maxSteps": 20,
+      "system": "You are a Figma design extraction agent. Your task is to analyze Figma JSON and extract structured semantic UI information for downstream AI systems. Never generate frontend code. Never explain your reasoning unless explicitly asked. Always prefer compact structured JSON outputs over prose. Preserve semantic layout meaning, reusable components, design tokens, responsive behavior, asset references, and screen intent. Minimize noise. Ignore irrelevant Figma metadata. Prefer code recreation over asset export whenever possible."
+    },
+    "lovable-prompt": {
+      "model": "deepseek/deepseek-chat",
+      "temperature": 0.3,
+      "maxSteps": 10,
+      "system": "You are a Lovable prompt generation agent. Your task is to convert structured design intelligence into concise, implementation-focused prompts optimized for Lovable. Focus on responsive layout, reusable components, design systems, interactions, and proper asset usage. Never include raw Figma JSON. Never describe irrelevant implementation details. Optimize for modern React/Tailwind applications."
+    },
     "docs": {
-      "model": "litellm/tier-fast",
+      "model": "deepseek/deepseek-chat",
       "temperature": 0.3,
       "permission": {
         "write": {
@@ -141,10 +134,50 @@
           "*": "deny"
         }
       }
+    },
+    "security": {
+      "model": "deepseek/deepseek-chat",
+      "temperature": 0.1,
+      "tools": {
+        "write": false,
+        "edit": false,
+        "patch": false
+      }
     }
   },
   // === PROVIDER ===
   "provider": {
+    "deepseek": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "DeepSeek",
+      "options": {
+        "baseURL": "https://api.deepseek.com/v1",
+        "apiKey": "{env:DEEPSEEK_API_KEY}"
+      },
+      "models": {
+        "deepseek-v4-flash": {
+          "name": "⚡ DeepSeek V4 Flash"
+        },
+        "deepseek-v4-pro": {
+          "name": "🧠 DeepSeek V4 Pro"
+        }
+      }
+    },
+    "windsurf": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Windsurf",
+      "options": {
+        "baseURL": "http://127.0.0.1:42100/v1"
+      },
+      "models": {
+        "swe-1.6": {
+          "name": "SWE 1.6"
+        },
+        "kimi-k2.6": {
+          "name": "Kimi K2.6"
+        }
+      }
+    },
     "litellm": {
       "npm": "@ai-sdk/openai-compatible",
       "name": "Homelab Gateway",
